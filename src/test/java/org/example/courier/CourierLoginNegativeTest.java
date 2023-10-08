@@ -24,20 +24,20 @@ public class CourierLoginNegativeTest {
 
         var courier = CourierGenerator.random();
 
-        Map <String, String> logData = new HashMap<>();
-        logData.put("login", courier.getLogin());
-        logData.put("password", "");
-
         ValidatableResponse response = client.create(courier);
         check.createdSuccessfully(response);
-
-        ValidatableResponse loginResponse = client.loginNotAllBody(logData);
-        check.loggedNotSuccessfully(loginResponse);
 
         Credentials creds = Credentials.from(courier);
 
         ValidatableResponse loginResponseSuccessfully = client.login(creds);
         courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
+
+        Map <String, String> logData = new HashMap<>();
+        logData.put("login", courier.getLogin());
+        logData.put("password", "");
+
+        ValidatableResponse loginResponse = client.loginNotAllBody(logData);
+        check.loggedNotSuccessfully(loginResponse);
 
     }
     @Test
@@ -46,20 +46,20 @@ public class CourierLoginNegativeTest {
 
         var courier = CourierGenerator.random();
 
-        Map <String, String> logData = new HashMap<>();
-        logData.put("login", courier.getLogin());
-        logData.put("password", courier.getPassword()+"11");
-
         ValidatableResponse response = client.create(courier);
         check.createdSuccessfully(response);
-
-        ValidatableResponse loginResponse = client.loginNotAllBody(logData);
-        check.loggedNotSuccessfully404(loginResponse);
 
         Credentials creds = Credentials.from(courier);
 
         ValidatableResponse loginResponseSuccessfully = client.login(creds);
         courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
+
+        Map <String, String> logData = new HashMap<>();
+        logData.put("login", courier.getLogin());
+        logData.put("password", courier.getPassword()+"11");
+
+        ValidatableResponse loginResponse = client.loginNotAllBody(logData);
+        check.loggedNotSuccessfully404(loginResponse);
     }
     @Test
     @DisplayName("Логин курьера с неверным логином")
@@ -67,19 +67,19 @@ public class CourierLoginNegativeTest {
 
         var courier = CourierGenerator.random();
 
-        Map <String, String> logData = new HashMap<>();
-        logData.put("login", "1231");
-        logData.put("password", courier.getPassword());
-
         ValidatableResponse response = client.create(courier);
         check.createdSuccessfully(response);
-
-        ValidatableResponse loginResponse = client.loginNotAllBody(logData);
-        check.loggedNotSuccessfully404(loginResponse);
 
         Credentials creds = Credentials.from(courier);
 
         ValidatableResponse loginResponseSuccessfully = client.login(creds);
         courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
+
+        Map <String, String> logData = new HashMap<>();
+        logData.put("login", "1231");
+        logData.put("password", courier.getPassword());
+
+        ValidatableResponse loginResponse = client.loginNotAllBody(logData);
+        check.loggedNotSuccessfully404(loginResponse);
     }
 }

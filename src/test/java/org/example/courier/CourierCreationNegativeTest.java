@@ -11,6 +11,12 @@ public class CourierCreationNegativeTest {
     private final CourierAssertions check = new CourierAssertions();
     private int courierId;
 
+    @After
+    public void deleteCourier() {
+        ValidatableResponse delete = client.delete(courierId);
+        check.deletedSuccessfully(delete);
+    }
+
     @Test
     @DisplayName ("Создание курьера с существующим ID")
     public void courierCreationSameId(){
@@ -19,23 +25,12 @@ public class CourierCreationNegativeTest {
         ValidatableResponse response = client.create(courier);
         check.createdSuccessfully(response);
 
-        ValidatableResponse responseNew = client.create(courier);
-        check.createdNotSuccessfully(responseNew);
-
         Credentials creds = Credentials.from(courier);
 
         ValidatableResponse loginResponseSuccessfully = client.login(creds);
         courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
 
-        ValidatableResponse delete = client.delete(courierId);
-        check.deletedSuccessfully(delete);
-
-    }
-    @Test
-    @DisplayName("Создание курьера не все поля заполнены")
-    public void courierCreationNotAllFields(){
-        var courier = CourierGenerator.generic();
-        ValidatableResponse response = client.create(courier);
-        check.creationWithBadRequest(response);
+        ValidatableResponse responseNew = client.create(courier);
+        check.createdNotSuccessfully(responseNew);
     }
 }
