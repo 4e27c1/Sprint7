@@ -1,6 +1,6 @@
 package org.example.courier;
 
-
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import java.util.Map;
@@ -23,7 +23,6 @@ public class CourierClient extends org.example.Client {
                 .post(COURIER_PATH + "/login")
                 .then().log().all();
     }
-
     public ValidatableResponse loginNotAllBody(Map login) {
         return getRequestSpecification()
                 .body(login)

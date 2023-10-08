@@ -3,6 +3,7 @@ package org.example.courier;
 import io.restassured.response.ValidatableResponse;
 import java.net.HttpURLConnection;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class CourierAssertions {
 
@@ -55,5 +56,9 @@ public class CourierAssertions {
         response
                 .assertThat()
                 .statusCode(HttpURLConnection.HTTP_OK);
+    }
+    public void checkLoggedIdNotNull(ValidatableResponse response) {
+        response.assertThat()
+                .body("id", notNullValue());
     }
 }

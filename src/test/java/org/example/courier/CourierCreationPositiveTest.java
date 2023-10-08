@@ -28,7 +28,7 @@ public class CourierCreationPositiveTest {
 
         ValidatableResponse loginResponse = client.login(creds);
         courierId = check.loggedIsSuccessfully(loginResponse);
-        assert courierId != 0;
+        check.checkLoggedIdNotNull(loginResponse);
     }
 
 }

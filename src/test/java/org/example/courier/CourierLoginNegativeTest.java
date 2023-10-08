@@ -2,6 +2,7 @@ package org.example.courier;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -12,6 +13,11 @@ public class CourierLoginNegativeTest {
     private final CourierClient client = new CourierClient();
     private final CourierAssertions check = new CourierAssertions();
     private int courierId;
+    @After
+    public void deleteCourier() {
+        ValidatableResponse delete = client.delete(courierId);
+        check.deletedSuccessfully(delete);
+    }
 
     @Test
     public void courierLoginWithoutAllFields() {
@@ -27,6 +33,12 @@ public class CourierLoginNegativeTest {
 
         ValidatableResponse loginResponse = client.loginNotAllBody(logData);
         check.loggedNotSuccessfully(loginResponse);
+
+        Credentials creds = Credentials.from(courier);
+
+        ValidatableResponse loginResponseSuccessfully = client.login(creds);
+        courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
+
     }
     @Test
     @DisplayName ("Логин курьера с неверным паролем")
@@ -43,6 +55,11 @@ public class CourierLoginNegativeTest {
 
         ValidatableResponse loginResponse = client.loginNotAllBody(logData);
         check.loggedNotSuccessfully404(loginResponse);
+
+        Credentials creds = Credentials.from(courier);
+
+        ValidatableResponse loginResponseSuccessfully = client.login(creds);
+        courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
     }
     @Test
     @DisplayName("Логин курьера с неверным логином")
@@ -59,5 +76,10 @@ public class CourierLoginNegativeTest {
 
         ValidatableResponse loginResponse = client.loginNotAllBody(logData);
         check.loggedNotSuccessfully404(loginResponse);
+
+        Credentials creds = Credentials.from(courier);
+
+        ValidatableResponse loginResponseSuccessfully = client.login(creds);
+        courierId = check.loggedIsSuccessfully(loginResponseSuccessfully);
     }
 }
