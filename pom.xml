@@ -87,6 +87,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
             <!-- подключение плагина allure-maven для вызова функций Allure с помощью Maven -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
